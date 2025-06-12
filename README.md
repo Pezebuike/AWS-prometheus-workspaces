@@ -507,5 +507,5 @@ Feel free to submit issues and enhancement requests or contribute improvements t
 
 ## License
 
-This configuration is provided as-is for educational and reference purposes.
+This configuration is provided for educational and reference purposes.
 >>>>>>> 7ea4d49 (first commit)
