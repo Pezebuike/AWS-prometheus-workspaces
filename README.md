@@ -501,7 +501,6 @@ To destroy all resources:
 terraform destroy
 ```
 
-**Warning**: This will permanently delete your Prometheus workspace and all associated data.
 
 ## Contributing
 
