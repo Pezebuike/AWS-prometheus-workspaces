@@ -1,4 +1,3 @@
-# lambda_webhook.py
 import json
 import boto3
 import os

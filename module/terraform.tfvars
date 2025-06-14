@@ -1,15 +1,15 @@
-# This file contains the configuration for Prometheus workspaces in AWS.
+# Prometheus workspaces in AWS.
 
 # AWS Configuration
-aws_region = "eu-north-1"  # Change to your preferred region
+aws_region = "eu-north-1"  # Add your preferred region
 
 # Workspace Configuration
 workspace_name = "prometheus"
-environment    = "production"  # Options: development, staging, production
+environment    = "dev"  # Add your desired environment (development, staging, production)
 
 # Logging Configuration
 enable_logging      = true
-log_retention_days  = 30  # 1, 3, 5, 7, 14, 30, 60, 90, 120, 150, 180, 365, 400, 545, 731, 1827, 3653
+log_retention_days  = 30  # Replace your log retaintion period example 1, 3, 5, 7, 14, 30, 60, 90, 120, 150, 180, 365, 400, 545, 731, 1827, 3653
 
 # Monitoring Configuration
 enable_alert_manager = true
@@ -60,8 +60,8 @@ notification_channels = {
 }
 
 # Legacy configuration (for backward compatibility)
-# enable_sns_notifications = true
-# notification_email      = "alerts@yourcompany.com"
+enable_sns_notifications = true
+notification_email      = "ezebuikemichael@gmail.com"
 
 # Lambda webhook function
 create_lambda_webhook = true
@@ -90,9 +90,3 @@ create_lambda_webhook = true
 # 3. Add "Events API v2" integration
 # 4. Copy Integration Key
 
-common_tags = {
-  Name        = local.owners
-  Environment = var.environment
-  Project     = var.project_name
-  Business    = var.business_division
-}

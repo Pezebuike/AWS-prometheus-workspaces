@@ -133,10 +133,16 @@ variable "enable_sns_notifications" {
   default     = null
 }
 
+
 variable "notification_email" {
-  description = "Email address for SNS notifications (DEPRECATED - use notification_channels.email.address)"
+  description = "Email address to receive alert notifications (leave empty to disable email notifications)"
   type        = string
   default     = ""
+  
+  validation {
+    condition = var.notification_email == "" || can(regex("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", var.notification_email))
+    error_message = "notification_email must be a valid email address or empty string."
+  }
 }
 
 variable "project_name" {

@@ -1,71 +1,18 @@
-# alertmanager.yml
-global:
-  resolve_timeout: 5m
-
-# The root route configuration
-route:
-  group_by: ['alertname', 'cluster', 'service']
-  group_wait: 10s
-  group_interval: 10s
-  repeat_interval: 12h
-  receiver: 'default-receiver'
-  routes:
-    - match:
-        severity: critical
-      receiver: 'critical-receiver'
-      repeat_interval: 5m
-    - match:
-        severity: warning
-      receiver: 'warning-receiver'
-      repeat_interval: 15m
-    - match:
-        alertname: InstanceDown
-      receiver: 'critical-receiver'
-      repeat_interval: 2m
-
-# Receivers configuration
-receivers:
-  - name: 'default-receiver'
-    webhook_configs:
-      - url: '${webhook_url}'
-        send_resolved: true
-        http_config:
-          follow_redirects: true
-        title: 'Prometheus Alert'
-
-  - name: 'critical-receiver'
-    webhook_configs:
-      - url: '${webhook_url}'
-        send_resolved: true
-        http_config:
-          follow_redirects: true
-        title: 'CRITICAL: Prometheus Alert'
-
-  - name: 'warning-receiver'
-    webhook_configs:
-      - url: '${webhook_url}'
-        send_resolved: true
-        http_config:
-          follow_redirects: true
-        title: 'WARNING: Prometheus Alert'
-
-# Inhibit rules to suppress alerts
-inhibit_rules:
-  - source_match:
-      severity: 'critical'
-    target_match:
-      severity: 'warning'
-    equal: ['alertname', 'cluster', 'service']
+alertmanager_config: |
+  global:
+    resolve_timeout: 5m
   
-  - source_match:
-      severity: 'warning'
-    target_match:
-      severity: 'info'
-    equal: ['alertname', 'cluster', 'service']
-
-  # Inhibit HighCPU when InstanceDown
-  - source_match:
-      alertname: 'InstanceDown'
-    target_match_re:
-      alertname: 'High.*Usage'
-    equal: ['instance']
+  route:
+    group_by: ['alertname']
+    group_wait: 10s
+    group_interval: 10s
+    repeat_interval: 12h
+    receiver: 'sns-webhook'
+  
+  receivers:
+  - name: 'sns-webhook'
+    sns_configs:
+    - topic_arn: '${sns_topic_arn}'
+      sigv4:
+        region: '${aws_region}'
+      subject: 'Prometheus Alert'

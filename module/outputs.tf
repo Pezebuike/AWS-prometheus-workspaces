@@ -1,5 +1,3 @@
-# outputs.tf
-
 output "prometheus_workspace_id" {
   description = "The Prometheus workspace ID"
   value       = aws_prometheus_workspace.prometheus.id
@@ -27,8 +25,9 @@ output "query_url" {
 
 output "workspace_status" {
   description = "The status of the Prometheus workspace"
-  value       = aws_prometheus_workspace.prometheus.status
+  value       = aws_prometheus_workspace.prometheus.arn # or use .id or .workspace_id
 }
+
 
 output "workspace_region" {
   description = "The AWS region where the workspace is created"
@@ -146,13 +145,13 @@ output "teams_configuration" {
   sensitive = false
 }
 
-# PagerDuty Configuration (masked for security)
-output "pagerduty_configuration" {
-  description = "PagerDuty notification configuration summary"
-  value = local.notification_channels.pagerduty.enabled ? {
-    enabled = true
-    integration_key_configured = local.notification_channels.pagerduty.integration_key != ""
-    severity_mapping = local.notification_channels.pagerduty.severity_map
-  } : { enabled = false }
-  sensitive = false
-}
+# # PagerDuty Configuration (masked for security)
+# output "pagerduty_configuration" {
+#   description = "PagerDuty notification configuration summary"
+#   value = local.notification_channels.pagerduty.enabled ? {
+#     enabled = true
+#     integration_key_configured = local.notification_channels.pagerduty.integration_key != ""
+#     severity_mapping = local.notification_channels.pagerduty.severity_map
+#   } : { enabled = false }
+#   sensitive = false
+# }

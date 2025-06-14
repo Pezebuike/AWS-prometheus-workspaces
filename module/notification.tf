@@ -1,5 +1,3 @@
-# notifications.tf
-
 # SNS Topic for Email Notifications
 resource "aws_sns_topic" "prometheus_alerts" {
   count = local.notification_channels.email.enabled ? 1 : 0
@@ -37,13 +35,13 @@ resource "aws_sns_topic_policy" "prometheus_alerts_policy" {
   })
 }
 
-# SNS Email Subscription
-resource "aws_sns_topic_subscription" "email_notification" {
-  count     = local.notification_channels.email.enabled && local.notification_channels.email.address != "" ? 1 : 0
-  topic_arn = aws_sns_topic.prometheus_alerts[0].arn
-  protocol  = "email"
-  endpoint  = local.notification_channels.email.address
-}
+# # SNS Email Subscription
+# resource "aws_sns_topic_subscription" "email_notification" {
+#   count     = local.notification_channels.email.enabled && local.notification_channels.email.address != "" ? 1 : 0
+#   topic_arn = aws_sns_topic.prometheus_alerts[0].arn
+#   protocol  = "email"
+#   endpoint  = local.notification_channels.email.address
+# }
 
 # Lambda function to receive webhooks and forward to notification channels
 resource "aws_lambda_function" "webhook_to_notifications" {
@@ -137,4 +135,20 @@ resource "aws_cloudwatch_log_group" "lambda_webhook_logs" {
     Environment = var.environment
     ManagedBy   = "Terraform"
   }
+}
+
+resource "aws_sns_topic_subscription" "lambda_webhook" {
+  count     = var.create_lambda_webhook && local.any_notifications_enabled ? 1 : 0
+  topic_arn = aws_sns_topic.prometheus_alerts[0].arn
+  protocol  = "lambda"
+  endpoint  = aws_lambda_function.webhook_to_notifications[0].arn
+}
+
+resource "aws_lambda_permission" "allow_sns" {
+  count         = var.create_lambda_webhook && local.any_notifications_enabled ? 1 : 0
+  statement_id  = "AllowExecutionFromSNS"
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.webhook_to_notifications[0].function_name
+  principal     = "sns.amazonaws.com"
+  source_arn    = aws_sns_topic.prometheus_alerts[0].arn
 }

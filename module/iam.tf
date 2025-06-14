@@ -1,5 +1,3 @@
-# iam.tf
-
 # IAM Role for Prometheus workspace
 resource "aws_iam_role" "prometheus_role" {
   name = "${var.workspace_name}-prometheus-role"
