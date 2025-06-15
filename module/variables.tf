@@ -157,3 +157,25 @@ variable "business_division" {
   type        = string
   default     = ""
 }
+
+
+
+
+# Variables for GitHub repository
+variable "github_username" {
+  description = "GitHub username (case-sensitive)"
+  type        = string
+  default     = ""  # Will be set in terraform.tfvars
+}
+
+variable "github_repository" {
+  description = "GitHub repository name (case-sensitive)"
+  type        = string
+  default     = ""  # Will be set in terraform.tfvars
+}
+
+variable "create_oidc_role" {
+  description = "Whether to create OIDC role for GitHub Actions"
+  type        = bool
+  default     = true
+}

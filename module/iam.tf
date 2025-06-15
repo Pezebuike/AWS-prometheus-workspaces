@@ -161,3 +161,115 @@ resource "aws_iam_role_policy_attachment" "lambda_webhook_policy" {
   role       = aws_iam_role.lambda_webhook_role[0].name
   policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
 }
+
+# IAM Role for GitHub Actions
+resource "aws_iam_role" "github_actions" {
+  count = var.create_oidc_role ? 1 : 0
+  
+  name = "GitHubActions-Terraform-Role"
+  description = "Role for GitHub Actions to deploy Terraform infrastructure"
+  
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Principal = {
+          Federated = aws_iam_openid_connect_provider.github_actions[0].arn
+        }
+        Action = "sts:AssumeRoleWithWebIdentity"
+        Condition = {
+          StringEquals = {
+            "token.actions.githubusercontent.com:aud" = "sts.amazonaws.com"
+          }
+          StringLike = {
+            "token.actions.githubusercontent.com:sub" = "repo:${var.github_username}/${var.github_repository}:*"
+          }
+        }
+      }
+    ]
+  })
+  
+  tags = {
+    Name        = "GitHubActions-Terraform-Role"
+    Purpose     = "GitHub Actions OIDC role"
+    Repository  = "${var.github_username}/${var.github_repository}"
+  }
+}
+
+# IAM Policy for Terraform operations
+resource "aws_iam_policy" "github_actions_terraform" {
+  count = var.create_oidc_role ? 1 : 0
+  
+  name        = "GitHubActions-Terraform-Policy"
+  description = "Policy for GitHub Actions Terraform operations"
+  
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          # Prometheus permissions
+          "aps:*",
+          
+          # SNS permissions
+          "sns:*",
+          
+          # Lambda permissions
+          "lambda:*",
+          
+          # IAM permissions (for creating roles and policies)
+          "iam:CreateRole",
+          "iam:DeleteRole",
+          "iam:AttachRolePolicy",
+          "iam:DetachRolePolicy",
+          "iam:CreatePolicy",
+          "iam:DeletePolicy",
+          "iam:CreateInstanceProfile",
+          "iam:DeleteInstanceProfile",
+          "iam:AddRoleToInstanceProfile",
+          "iam:RemoveRoleFromInstanceProfile",
+          "iam:PassRole",
+          "iam:GetRole",
+          "iam:GetInstanceProfile",
+          "iam:GetPolicy",
+          "iam:ListAttachedRolePolicies",
+          "iam:ListInstanceProfilesForRole",
+          "iam:TagRole",
+          "iam:TagPolicy",
+          "iam:TagInstanceProfile",
+          
+          # CloudWatch Logs permissions
+          "logs:*",
+          
+          # S3 permissions (for Terraform state)
+          "s3:GetObject",
+          "s3:PutObject",
+          "s3:DeleteObject",
+          "s3:ListBucket",
+          
+          # DynamoDB permissions (for Terraform state locking)
+          "dynamodb:GetItem",
+          "dynamodb:PutItem",
+          "dynamodb:DeleteItem"
+        ]
+        Resource = "*"
+      }
+    ]
+  })
+  
+  tags = {
+    Name       = "GitHubActions-Terraform-Policy"
+    Purpose    = "GitHub Actions Terraform permissions"
+    Repository = "${var.github_username}/${var.github_repository}"
+  }
+}
+
+# Attach policy to role
+resource "aws_iam_role_policy_attachment" "github_actions_terraform" {
+  count = var.create_oidc_role ? 1 : 0
+  
+  role       = aws_iam_role.github_actions[0].name
+  policy_arn = aws_iam_policy.github_actions_terraform[0].arn
+}

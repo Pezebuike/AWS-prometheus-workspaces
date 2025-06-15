@@ -23,7 +23,7 @@ notification_channels = {
   # Email notifications via SNS
   email = {
     enabled = true
-    address = "ezebuikemichael@gmail.com" # Replace with your email
+    address = "" # Replace with your email
   }
 
   # Slack notifications
@@ -66,6 +66,20 @@ notification_email       = "ezebuikemichael@gmail.com"
 # Lambda webhook function
 create_lambda_webhook = true
 
+
+# GitHub Repository Configuration (CRITICAL: Must match exactly)
+github_username    = "Pezebuike"
+github_repository  = "AWS-prometheus-workspaces"
+
+create_oidc_role   = true
+
+
+
+
+
+
+# Keep your existing configuration below...
+
 # How to get webhook URLs:
 # 
 # Slack:
@@ -89,4 +103,5 @@ create_lambda_webhook = true
 # 2. Services → Select service → Integrations
 # 3. Add "Events API v2" integration
 # 4. Copy Integration Key
+
 
