@@ -68,10 +68,10 @@ create_lambda_webhook = true
 
 
 # GitHub Repository Configuration (CRITICAL: Must match exactly)
-github_username    = "Pezebuike"
-github_repository  = "AWS-prometheus-workspaces"
+github_username   = "Pezebuike"
+github_repository = "AWS-prometheus-workspaces"
 
-create_oidc_role   = true
+create_oidc_role = true
 
 
 
