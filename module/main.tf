@@ -36,7 +36,7 @@ resource "aws_prometheus_workspace" "prometheus" {
   tags = {
     Name        = var.workspace_name
     Environment = var.environment
-    ManagedBy   = "Terraform"
+    ManagedBy   = "Pezebuike"
     CreatedBy   = data.aws_caller_identity.current.user_id
   }
 }
