@@ -6,7 +6,7 @@ locals {
   # Handle legacy variables
   email_enabled = var.enable_sns_notifications != null ? var.enable_sns_notifications : var.notification_channels.email.enabled
   email_address = var.notification_email != "" ? var.notification_email : var.notification_channels.email.address
-  
+
   # Final notification channels configuration
   notification_channels = {
     email = {
@@ -18,7 +18,7 @@ locals {
     teams     = var.notification_channels.teams
     pagerduty = var.notification_channels.pagerduty
   }
-  
+
   # Check if any notification channel is enabled
   any_notifications_enabled = (
     local.notification_channels.email.enabled ||
@@ -45,7 +45,7 @@ resource "aws_prometheus_workspace" "prometheus" {
 resource "aws_cloudwatch_log_group" "prometheus_logs" {
   count             = var.enable_logging ? 1 : 0
   name              = "/aws/prometheus/${var.workspace_name}"
-  retention_in_days = var.log_retention_days  
+  retention_in_days = var.log_retention_days
 
   tags = merge(
     local.common_tags,

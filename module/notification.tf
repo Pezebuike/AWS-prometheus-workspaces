@@ -61,22 +61,22 @@ resource "aws_lambda_function" "webhook_to_notifications" {
       # Email/SNS configuration
       SNS_TOPIC_ARN = local.notification_channels.email.enabled ? aws_sns_topic.prometheus_alerts[0].arn : ""
       EMAIL_ENABLED = tostring(local.notification_channels.email.enabled)
-      
+
       # Slack configuration
       SLACK_ENABLED     = tostring(local.notification_channels.slack.enabled)
       SLACK_WEBHOOK_URL = local.notification_channels.slack.webhook_url
       SLACK_CHANNEL     = local.notification_channels.slack.channel
       SLACK_USERNAME    = local.notification_channels.slack.username
-      
+
       # Discord configuration
       DISCORD_ENABLED     = tostring(local.notification_channels.discord.enabled)
       DISCORD_WEBHOOK_URL = local.notification_channels.discord.webhook_url
       DISCORD_USERNAME    = local.notification_channels.discord.username
-      
+
       # Microsoft Teams configuration
       TEAMS_ENABLED     = tostring(local.notification_channels.teams.enabled)
       TEAMS_WEBHOOK_URL = local.notification_channels.teams.webhook_url
-      
+
       # PagerDuty configuration
       PAGERDUTY_ENABLED         = tostring(local.notification_channels.pagerduty.enabled)
       PAGERDUTY_INTEGRATION_KEY = local.notification_channels.pagerduty.integration_key
@@ -101,7 +101,7 @@ data "archive_file" "lambda_webhook_zip" {
   count       = var.create_lambda_webhook && local.any_notifications_enabled ? 1 : 0
   type        = "zip"
   output_path = "webhook_lambda.zip"
-  
+
   source {
     content  = file("${path.module}/lambda_webhook.py")
     filename = "index.py"
@@ -120,7 +120,7 @@ resource "aws_lambda_function_url" "webhook_url" {
     allow_methods     = ["POST", "GET"]
     allow_headers     = ["date", "keep-alive", "content-type"]
     expose_headers    = ["date", "keep-alive"]
-    max_age          = 86400
+    max_age           = 86400
   }
 }
 

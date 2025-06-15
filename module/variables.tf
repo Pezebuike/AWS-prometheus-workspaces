@@ -67,25 +67,25 @@ variable "notification_channels" {
       enabled = bool
       address = string
     }), { enabled = false, address = "" })
-    
+
     slack = optional(object({
       enabled     = bool
       webhook_url = string
       channel     = string
       username    = string
     }), { enabled = false, webhook_url = "", channel = "#alerts", username = "Prometheus" })
-    
+
     discord = optional(object({
       enabled     = bool
       webhook_url = string
       username    = string
     }), { enabled = false, webhook_url = "", username = "Prometheus" })
-    
+
     teams = optional(object({
       enabled     = bool
       webhook_url = string
     }), { enabled = false, webhook_url = "" })
-    
+
     pagerduty = optional(object({
       enabled         = bool
       integration_key = string
@@ -96,7 +96,7 @@ variable "notification_channels" {
       })
     }), { enabled = false, integration_key = "", severity_map = {} })
   })
-  
+
   default = {
     email = {
       enabled = true
@@ -138,9 +138,9 @@ variable "notification_email" {
   description = "Email address to receive alert notifications (leave empty to disable email notifications)"
   type        = string
   default     = ""
-  
+
   validation {
-    condition = var.notification_email == "" || can(regex("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", var.notification_email))
+    condition     = var.notification_email == "" || can(regex("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", var.notification_email))
     error_message = "notification_email must be a valid email address or empty string."
   }
 }
@@ -149,7 +149,7 @@ variable "project_name" {
   description = "Name of the project"
   type        = string
   default     = ""
-  
+
 }
 
 variable "business_division" {

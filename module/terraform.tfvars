@@ -1,56 +1,56 @@
 # Prometheus workspaces in AWS.
 
 # AWS Configuration
-aws_region = "eu-north-1"  # Add your preferred region
+aws_region = "eu-north-1" # Add your preferred region
 
 # Workspace Configuration
 workspace_name = "prometheus"
-environment    = "dev"  # Add your desired environment (development, staging, production)
+environment    = "dev" # Add your desired environment (development, staging, production)
 
 # Logging Configuration
-enable_logging      = true
-log_retention_days  = 30  # Replace your log retaintion period example 1, 3, 5, 7, 14, 30, 60, 90, 120, 150, 180, 365, 400, 545, 731, 1827, 3653
+enable_logging     = true
+log_retention_days = 30 # Replace your log retaintion period example 1, 3, 5, 7, 14, 30, 60, 90, 120, 150, 180, 365, 400, 545, 731, 1827, 3653
 
 # Monitoring Configuration
 enable_alert_manager = true
 enable_rule_groups   = true
 
 # Alert Manager Configuration
-webhook_url = ""  # Leave empty to use Lambda webhook, or provide custom webhook URL
+webhook_url = "" # Leave empty to use Lambda webhook, or provide custom webhook URL
 
 # Notification Channels Configuration
 notification_channels = {
   # Email notifications via SNS
   email = {
     enabled = true
-    address = "ezebuikemichael@gmail.com"  # Replace with your email
+    address = "ezebuikemichael@gmail.com" # Replace with your email
   }
-  
+
   # Slack notifications
   slack = {
     enabled     = true
-    webhook_url = "https://hooks.slack.com/services/YOUR/SLACK/WEBHOOK"  # Replace with your Slack webhook
-    channel     = "#alerts"  # Slack channel name
+    webhook_url = "https://hooks.slack.com/services/YOUR/SLACK/WEBHOOK" # Replace with your Slack webhook
+    channel     = "#alerts"                                             # Slack channel name
     username    = "Prometheus Bot"
   }
-  
+
   # Discord notifications
   discord = {
     enabled     = true
-    webhook_url = "https://discord.com/api/webhooks/YOUR/DISCORD/WEBHOOK"  # Replace with Discord webhook
+    webhook_url = "https://discord.com/api/webhooks/YOUR/DISCORD/WEBHOOK" # Replace with Discord webhook
     username    = "Prometheus Bot"
   }
-  
+
   # Microsoft Teams notifications
   teams = {
     enabled     = true
-    webhook_url = "https://outlook.office.com/webhook/YOUR/TEAMS/WEBHOOK"  # Replace with Teams webhook
+    webhook_url = "https://outlook.office.com/webhook/YOUR/TEAMS/WEBHOOK" # Replace with Teams webhook
   }
-  
+
   # PagerDuty integration
   pagerduty = {
     enabled         = true
-    integration_key = "YOUR_PAGERDUTY_INTEGRATION_KEY"  # Replace with PagerDuty integration key
+    integration_key = "YOUR_PAGERDUTY_INTEGRATION_KEY" # Replace with PagerDuty integration key
     severity_map = {
       critical = "critical"
       warning  = "warning"
@@ -61,7 +61,7 @@ notification_channels = {
 
 # Legacy configuration (for backward compatibility)
 enable_sns_notifications = true
-notification_email      = "ezebuikemichael@gmail.com"
+notification_email       = "ezebuikemichael@gmail.com"
 
 # Lambda webhook function
 create_lambda_webhook = true

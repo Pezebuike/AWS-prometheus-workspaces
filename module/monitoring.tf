@@ -14,7 +14,7 @@ resource "aws_sns_topic_subscription" "email_notification" {
   topic_arn = aws_sns_topic.prometheus_alerts[0].arn
   protocol  = "email"
   endpoint  = var.notification_email
-  
+
   # This will remain in "PendingConfirmation" state until user clicks confirmation link in email
 }
 
@@ -27,7 +27,7 @@ output "email_subscription_status" {
 resource "aws_prometheus_alert_manager_definition" "alert_manager" {
   count        = var.enable_alert_manager ? 1 : 0
   workspace_id = aws_prometheus_workspace.prometheus.id
-  
+
   definition = templatefile("${path.module}/alertmanager.yml", {
     sns_topic_arn = aws_sns_topic.prometheus_alerts[0].arn
     aws_region    = data.aws_region.current.name
@@ -96,7 +96,7 @@ resource "aws_prometheus_alert_manager_definition" "alert_manager" {
 # resource "aws_prometheus_alert_manager_definition" "alert_manager" {
 #   count        = var.enable_alert_manager ? 1 : 0
 #   workspace_id = aws_prometheus_workspace.prometheus.id
-  
+
 #   definition = base64encode(templatefile("${path.module}/alertmanager.yml", {
 #     sns_topic_arn = aws_sns_topic.prometheus_alerts[0].arn
 #     aws_region    = data.aws_region.current.name
@@ -110,7 +110,7 @@ resource "aws_prometheus_rule_group_namespace" "rules" {
   workspace_id = aws_prometheus_workspace.prometheus.id
 
   data = file("${path.module}/prometheus-rules.yml")
-  
+
   # data = base64encode(file("${path.module}/prometheus-rules.yml"))
 }
 
@@ -129,7 +129,7 @@ resource "aws_prometheus_rule_group_namespace" "rules" {
 #   topic_arn = aws_sns_topic.prometheus_alerts[0].arn
 #   protocol  = "email"
 #   endpoint  = var.notification_email
-  
+
 #   # This will remain in "PendingConfirmation" state until user clicks confirmation link in email
 # }
 
@@ -142,7 +142,7 @@ resource "aws_prometheus_rule_group_namespace" "rules" {
 # resource "aws_prometheus_alert_manager_definition" "alert_manager" {
 #   count        = var.enable_alert_manager ? 1 : 0
 #   workspace_id = aws_prometheus_workspace.prometheus.id
-  
+
 #   definition = <<-EOT
 # alertmanager_config: |
 #   route:
@@ -161,7 +161,7 @@ resource "aws_prometheus_rule_group_namespace" "rules" {
 #   count        = var.enable_rule_groups ? 1 : 0
 #   name         = "prometheus-rules"
 #   workspace_id = aws_prometheus_workspace.prometheus.id
-  
+
 #   data = <<-EOT
 # groups:
 # - name: basic-monitoring
@@ -174,7 +174,7 @@ resource "aws_prometheus_rule_group_namespace" "rules" {
 #     annotations:
 #       summary: "Instance {{ $labels.instance }} down"
 #       description: "{{ $labels.instance }} of job {{ $labels.job }} has been down for more than 5 minutes."
-      
+
 #   - alert: HighCPUUsage
 #     expr: 100 - (avg by(instance) (rate(node_cpu_seconds_total{mode="idle"}[5m])) * 100) > 80
 #     for: 10m
@@ -183,7 +183,7 @@ resource "aws_prometheus_rule_group_namespace" "rules" {
 #     annotations:
 #       summary: "High CPU usage on {{ $labels.instance }}"
 #       description: "CPU usage is above 80% for more than 10 minutes."
-      
+
 #   - alert: HighMemoryUsage
 #     expr: (1 - (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes)) * 100 > 85
 #     for: 5m

@@ -116,9 +116,9 @@ output "webhook_endpoint" {
 output "slack_configuration" {
   description = "Slack notification configuration summary"
   value = local.notification_channels.slack.enabled ? {
-    enabled  = true
-    channel  = local.notification_channels.slack.channel
-    username = local.notification_channels.slack.username
+    enabled            = true
+    channel            = local.notification_channels.slack.channel
+    username           = local.notification_channels.slack.username
     webhook_configured = local.notification_channels.slack.webhook_url != ""
   } : { enabled = false }
   sensitive = false
@@ -128,8 +128,8 @@ output "slack_configuration" {
 output "discord_configuration" {
   description = "Discord notification configuration summary"
   value = local.notification_channels.discord.enabled ? {
-    enabled  = true
-    username = local.notification_channels.discord.username
+    enabled            = true
+    username           = local.notification_channels.discord.username
     webhook_configured = local.notification_channels.discord.webhook_url != ""
   } : { enabled = false }
   sensitive = false
@@ -139,7 +139,7 @@ output "discord_configuration" {
 output "teams_configuration" {
   description = "Microsoft Teams notification configuration summary"
   value = local.notification_channels.teams.enabled ? {
-    enabled = true
+    enabled            = true
     webhook_configured = local.notification_channels.teams.webhook_url != ""
   } : { enabled = false }
   sensitive = false
