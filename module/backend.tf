@@ -4,6 +4,5 @@ terraform {
     key            = "prometheus/terraform.tfstate"
     region         = "eu-north-1"
     encrypt        = true
-    dynamodb_table = "terraform-locks" # Optional: for state locking
   }
 }
