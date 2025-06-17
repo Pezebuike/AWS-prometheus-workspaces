@@ -92,7 +92,7 @@ create_oidc_role = true
 # 1. Go to your Discord server settings
 # 2. Select "Integrations" → "Webhooks"
 # 3. Create webhook and copy URL
-#
+##
 # Microsoft Teams:
 # 1. Go to Teams channel
 # 2. Click "..." → "Connectors"
