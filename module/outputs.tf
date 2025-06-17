@@ -160,8 +160,8 @@ output "oidc_provider_arn" {
 output "github_repository_config" {
   description = "GitHub repository configuration for OIDC"
   value = var.create_oidc_role ? {
-    username   = var.github_username
-    repository = var.github_repository
+    username       = var.github_username
+    repository     = var.github_repository
     oidc_condition = "repo:${var.github_username}/${var.github_repository}:*"
   } : null
 }
