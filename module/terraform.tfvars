@@ -61,14 +61,14 @@ notification_channels = {
 
 # Legacy configuration (for backward compatibility)
 enable_sns_notifications = true
-notification_email       = "ezebuikemichael@gmail.com"
+notification_email       = "" # Replace with your email for SNS notifications
 
 # Lambda webhook function
 create_lambda_webhook = true
 
 
 # GitHub Repository Configuration (CRITICAL: Must match exactly)
-github_username   = "Pezebuike"
+github_username   = ""
 github_repository = "AWS-prometheus-workspaces"
 
 create_oidc_role = true
