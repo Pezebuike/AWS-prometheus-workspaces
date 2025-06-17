@@ -146,25 +146,25 @@ output "teams_configuration" {
 }
 
 
-# Outputs
-output "github_actions_role_arn" {
-  description = "ARN of the GitHub Actions OIDC role"
-  value       = var.create_oidc_role ? aws_iam_role.github_actions[0].arn : null
-}
+# # Outputs
+# output "github_actions_role_arn" {
+#   description = "ARN of the GitHub Actions OIDC role"
+#   value       = var.create_oidc_role ? aws_iam_role.github_actions[0].arn : null
+# }
 
-output "oidc_provider_arn" {
-  description = "ARN of the GitHub OIDC identity provider"
-  value       = var.create_oidc_role ? aws_iam_openid_connect_provider.github_actions[0].arn : null
-}
+# output "oidc_provider_arn" {
+#   description = "ARN of the GitHub OIDC identity provider"
+#   value       = var.create_oidc_role ? aws_iam_openid_connect_provider.github_actions[0].arn : null
+# }
 
-output "github_repository_config" {
-  description = "GitHub repository configuration for OIDC"
-  value = var.create_oidc_role ? {
-    username       = var.github_username
-    repository     = var.github_repository
-    oidc_condition = "repo:${var.github_username}/${var.github_repository}:*"
-  } : null
-}
+# output "github_repository_config" {
+#   description = "GitHub repository configuration for OIDC"
+#   value = var.create_oidc_role ? {
+#     username       = var.github_username
+#     repository     = var.github_repository
+#     oidc_condition = "repo:${var.github_username}/${var.github_repository}:*"
+#   } : null
+# }
 
 
 
